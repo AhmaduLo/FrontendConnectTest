@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "onnect",
   "version": "0.0.0",
   "scripts": {
@@ -42,5 +43,10 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.7.2"
+=======
+  "dependencies": {
+    "@angular/common": "^19.2.3",
+    "cors": "^2.8.5"
+>>>>>>> 9e46eedf26a842a6d2bb7324da06f6b2effcf3b5
   }
 }
