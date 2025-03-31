@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@angular/common": "^19.2.3",
+    "cors": "^2.8.5"
+  }
+}
