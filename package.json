@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
   "name": "onnect",
   "version": "0.0.0",
   "scripts": {
@@ -10,17 +9,17 @@
     "test": "ng test",
     "serve:ssr:onnect": "node dist/onnect/server/server.mjs"
   },
-  "private": true,
+   "private": true,
   "dependencies": {
-    "@angular/animations": "^19.1.0",
-    "@angular/common": "^19.1.0",
-    "@angular/compiler": "^19.1.0",
-    "@angular/core": "^19.1.0",
-    "@angular/forms": "^19.1.0",
-    "@angular/platform-browser": "^19.1.0",
-    "@angular/platform-browser-dynamic": "^19.1.0",
+   "@angular/animations": "19.2.4",
+   "@angular/common": "19.2.4",
+    "@angular/compiler": "19.2.4",
+    "@angular/core": "19.2.4",
+    "@angular/forms": "19.2.4",
+    "@angular/platform-browser": "19.2.4",
+    "@angular/platform-browser-dynamic": "19.2.4",
     "@angular/platform-server": "^19.1.0",
-    "@angular/router": "^19.1.0",
+    "@angular/router": "19.2.4",
     "@angular/ssr": "^19.1.7",
     "@types/crypto-js": "^4.2.2",
     "crypto-js": "^4.2.0",
@@ -43,10 +42,5 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.7.2"
-=======
-  "dependencies": {
-    "@angular/common": "^19.2.3",
-    "cors": "^2.8.5"
->>>>>>> 9e46eedf26a842a6d2bb7324da06f6b2effcf3b5
   }
 }

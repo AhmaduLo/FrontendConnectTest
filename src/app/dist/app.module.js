@@ -7,12 +7,13 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 exports.__esModule = true;
 exports.AppModule = void 0;
-var http_1 = require("@angular/common/http");
 var core_1 = require("@angular/core");
-var common_1 = require("@angular/common");
+var app_routes_1 = require("./app.routes"); // Modifié: pas besoin d'importer 'routes' directement
+var auth_interceptor_1 = require("./auth/auth.interceptor");
 var platform_browser_1 = require("@angular/platform-browser");
+var http_1 = require("@angular/common/http");
 var forms_1 = require("@angular/forms");
-var app_routes_1 = require("./app.routes");
+var router_1 = require("@angular/router");
 var AppModule = /** @class */ (function () {
     function AppModule() {
     }
@@ -20,11 +21,18 @@ var AppModule = /** @class */ (function () {
         core_1.NgModule({
             imports: [
                 platform_browser_1.BrowserModule,
-                common_1.CommonModule,
                 http_1.HttpClientModule,
-                forms_1.ReactiveFormsModule,
                 forms_1.FormsModule,
-                app_routes_1.AppRoutingModule
+                forms_1.ReactiveFormsModule,
+                app_routes_1.AppRoutingModule,
+                router_1.RouterModule.forRoot([]) // À supprimer car déjà inclus dans AppRoutingModule
+            ],
+            providers: [
+                {
+                    provide: http_1.HTTP_INTERCEPTORS,
+                    useValue: auth_interceptor_1.AuthInterceptor,
+                    multi: true
+                }
             ]
         })
     ], AppModule);

@@ -13,12 +13,17 @@ var signup_component_1 = require("./components/signup/signup.component");
 var home_page_component_1 = require("./components/home-page/home-page.component");
 var core_1 = require("@angular/core");
 var accueil_component_1 = require("./components/acuueil/accueil.component");
+var auth_guard_1 = require("./auth/auth.guard");
 exports.routes = [
     { path: '', component: home_page_component_1.HomePageComponent },
     { path: 'login', component: login_component_1.LoginComponent },
     { path: 'signup', component: signup_component_1.SignupComponent },
     { path: 'accueil', component: accueil_component_1.AccueilComponent },
-    { path: '**', redirectTo: '' } // Redirection pour les routes inconnues
+    { path: '**', redirectTo: '' },
+    {
+        path: '', canActivate: [auth_guard_1.AuthGuard],
+        component: accueil_component_1.AccueilComponent
+    }
 ];
 var AppRoutingModule = /** @class */ (function () {
     function AppRoutingModule() {
