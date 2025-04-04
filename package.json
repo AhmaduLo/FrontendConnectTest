@@ -9,10 +9,10 @@
     "test": "ng test",
     "serve:ssr:onnect": "node dist/onnect/server/server.mjs"
   },
-   "private": true,
+  "private": true,
   "dependencies": {
-   "@angular/animations": "19.2.4",
-   "@angular/common": "19.2.4",
+    "@angular/animations": "19.2.4",
+    "@angular/common": "19.2.4",
     "@angular/compiler": "19.2.4",
     "@angular/core": "19.2.4",
     "@angular/forms": "19.2.4",
@@ -29,7 +29,7 @@
     "zone.js": "~0.15.0"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^19.1.7",
+    "@angular-devkit/build-angular": "19.2.6",
     "@angular/cli": "^19.1.7",
     "@angular/compiler-cli": "^19.1.0",
     "@types/express": "^4.17.17",
