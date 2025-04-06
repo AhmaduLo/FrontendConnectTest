@@ -5,14 +5,20 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 exports.__esModule = true;
 exports.AuthService = void 0;
+var common_1 = require("@angular/common");
 var http_1 = require("@angular/common/http");
 var core_1 = require("@angular/core");
 var AuthService = /** @class */ (function () {
     //HttpClient permet d'envoyer des requêtes HTTP.
-    function AuthService(http) {
+    function AuthService(platformId, http, router) {
+        this.platformId = platformId;
         this.http = http;
+        this.router = router;
         this.apiUrl = 'http://localhost:8080/api';
         //private encryptionKey = 'Bamba'; // Doit matcher avec le backend
         this.loginUrl = this.apiUrl + "/users/login"; // Endpoint spécifique pour le login
@@ -46,8 +52,10 @@ var AuthService = /** @class */ (function () {
     };
     // Méthode pour récupérer le token (optionnel)
     AuthService.prototype.getToken = function () {
-        return sessionStorage.getItem('auth_token');
-        // return this.cookieService.get('auth_token'); // Pour les cookies
+        if (common_1.isPlatformBrowser(this.platformId)) {
+            return sessionStorage.getItem('auth_token');
+        }
+        return null;
     };
     // Vérifie si l'utilisateur est connecté
     AuthService.prototype.isLoggedIn = function () {
@@ -56,13 +64,11 @@ var AuthService = /** @class */ (function () {
     // Suppression du token (nouvelle méthode utile pour le logout)
     AuthService.prototype.removeToken = function () {
         sessionStorage.removeItem('auth_token');
-        // this.cookieService.delete('auth_token');
-        //this.router.navigate(['/login']);
+        this.router.navigate(['/login']);
     };
     // Méthode pour se déconnecter
     AuthService.prototype.logout = function () {
         this.removeToken();
-        console.log("Utilisateur déconnecté !");
     };
     // Vérification de l'expiration du token (optionnel)
     AuthService.prototype.isTokenExpired = function () {
@@ -72,10 +78,27 @@ var AuthService = /** @class */ (function () {
         var payload = JSON.parse(atob(token.split('.')[1]));
         return payload.exp * 1000 < Date.now();
     };
+    //les données qui sont toujours à jour dans le token
+    AuthService.prototype.getUserFromToken = function () {
+        var token = this.getToken();
+        if (!token)
+            return null;
+        try {
+            var payload = token.split('.')[1];
+            var decoded = atob(payload.replace(/-/g, '+').replace(/_/g, '/'));
+            var _a = JSON.parse(decoded), sub = _a.sub, userId = _a.userId, role = _a.role;
+            return { userId: userId, email: sub, role: role };
+        }
+        catch (error) {
+            console.error('Token decoding error', error);
+            return null;
+        }
+    };
     AuthService = __decorate([
         core_1.Injectable({
             providedIn: 'root'
-        })
+        }),
+        __param(0, core_1.Inject(core_1.PLATFORM_ID))
     ], AuthService);
     return AuthService;
 }());

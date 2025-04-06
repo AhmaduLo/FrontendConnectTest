@@ -38,7 +38,6 @@ var LoginComponent = /** @class */ (function () {
                     // Stockage du token (si votre API en retourne un)
                     if (response.token) {
                         _this.authService.setToken(response.token);
-                        console.log(response.token);
                     }
                     // Redirection vers la page d'accueil ou dashboard
                     _this.router.navigate(['/accueil']);

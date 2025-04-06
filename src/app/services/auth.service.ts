@@ -1,5 +1,7 @@
+import { isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -12,7 +14,10 @@ export class AuthService {
   private registerUrl = `${this.apiUrl}/users`; // Endpoint pour l'enregistrement
 
   //HttpClient permet d'envoyer des requêtes HTTP.
-  constructor(private http: HttpClient) { }
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private http: HttpClient,
+    private router: Router) { }
 
   // Méthode pour l'inscription
   //register() envoie une requête POST avec les données d'inscription.
@@ -47,8 +52,10 @@ export class AuthService {
 
   // Méthode pour récupérer le token (optionnel)
   getToken(): string | null {
-    return sessionStorage.getItem('auth_token');
-    // return this.cookieService.get('auth_token'); // Pour les cookies
+    if (isPlatformBrowser(this.platformId)) {
+      return sessionStorage.getItem('auth_token');
+    }
+    return null;
   }
 
   // Vérifie si l'utilisateur est connecté
@@ -58,13 +65,11 @@ export class AuthService {
   // Suppression du token (nouvelle méthode utile pour le logout)
   removeToken(): void {
     sessionStorage.removeItem('auth_token');
-    // this.cookieService.delete('auth_token');
-    //this.router.navigate(['/login']);
+    this.router.navigate(['/login']);
   }
   // Méthode pour se déconnecter
   logout(): void {
     this.removeToken();
-    console.log("Utilisateur déconnecté !");
   }
 
   // Vérification de l'expiration du token (optionnel)
@@ -75,4 +80,28 @@ export class AuthService {
     const payload = JSON.parse(atob(token.split('.')[1]));
     return payload.exp * 1000 < Date.now();
   }
+
+  //les données qui sont toujours à jour dans le token
+  getUserFromToken(): { userId: number, email: string, role?: string } | null {
+    const token = this.getToken();
+    if (!token) return null;
+
+    try {
+      const payload = token.split('.')[1];
+      const decoded = atob(payload.replace(/-/g, '+').replace(/_/g, '/'));
+      const { sub, userId, role } = JSON.parse(decoded);
+      return { userId, email: sub, role };
+    } catch (error) {
+      console.error('Token decoding error', error);
+      return null;
+    }
+  }
+
+  // getUserId(): number {
+  //   const tokenData = this.getUserFromToken();
+  //   if (!tokenData?.userId) {
+  //     throw new Error('User ID not found in token');
+  //   }
+  //   return tokenData.userId;
+  // }
 }

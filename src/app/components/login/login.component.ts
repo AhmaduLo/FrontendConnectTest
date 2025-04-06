@@ -98,9 +98,7 @@ export class LoginComponent {
         next: (response) => {
           // Stockage du token (si votre API en retourne un)
           if (response.token) {
-            this.authService.setToken(response.token);
-            console.log(response.token);
-            
+            this.authService.setToken(response.token);      
           }
           // Redirection vers la page d'accueil ou dashboard
           this.router.navigate(['/accueil']);
